@@ -1,0 +1,6 @@
+[submodule "libs/sferes2"]
+	path = libs/sferes2
+	url = https://github.com/gaurav-dixitv/sferes2.git
+[submodule "libs/cvt_map_elites"]
+	path = libs/cvt_map_elites
+	url = https://github.com/gaurav-dixitv/cvt_map_elites.git
