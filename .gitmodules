@@ -4,3 +4,6 @@
 [submodule "libs/cvt_map_elites"]
 	path = libs/cvt_map_elites
 	url = https://github.com/gaurav-dixitv/cvt_map_elites.git
+[submodule "environments/rovers"]
+	path = environments/rovers
+	url = https://github.com/gaurav-dixitv/rovers.git

@@ -5,6 +5,7 @@ mkdir install
 # experiments
 cd libs/sferes2/exp
 ln -s ../../../experiments/sferes
+ln -s ../../../experiments/rovers
 cd ../../../
 
 # modules
@@ -28,3 +29,6 @@ cd libs/sferes2
 # 1. sferes test
 ./waf configure --cpp14=yes --exp sferes
 ./waf --exp sferes
+#2. rovers test
+./waf configure --cpp17=yes --exp rovers
+./waf --exp rovers -v
