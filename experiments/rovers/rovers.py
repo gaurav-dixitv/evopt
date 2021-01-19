@@ -9,31 +9,42 @@ librovers = os.path.abspath(path.join(Path(__file__).resolve().parents[2] ,"envi
 sys.path.append(librovers)
 
 from librovers import *  # import bindings.
+from render_rovers import *
 
+"""
+Random walk at every step.
+"""
+class RandomWalkRover (rovers.IRover):
+    def __init__(self, obs_radius=1.0):
+        super().__init__(obs_radius)
+
+    def scan(self, agent_pack):
+        return rovers.tensor([9.0 for r in agent_pack.agents])
+
+    def reward(self, agent_pack):
+        return rovers.rewards.Difference().compute(agent_pack)
+
+    def apply_action(self):
+        x = self.position().x + random.uniform(-0.1, 0.1)
+        y = self.position().y + random.uniform(-0.1, 0.1)
+        self.set_position(x, y)
 
 # aliasing some types to reduce typing
 Dense = rovers.Lidar[rovers.Density]        # lidar with density composition
 Close = rovers.Lidar[rovers.Closest]        # lidar for closest rover/poi
 Discrete = thyme.spaces.Discrete            # Discrete action space
-Difference = rovers.rewards.Difference      # Difference reward
 
-# create rovers
 agents = [
-    # create agent with difference reward
-    rovers.Rover[Dense, Discrete, Difference](1.0, Dense(90)),
-    # create rover with close lidar and global reward
+    RandomWalkRover(1.0),
+    RandomWalkRover(1.0),
     rovers.Rover[Close, Discrete](2.0, Close(90)),
-    rovers.Drone()  # drone with no policy specifications (all defaults)
+    rovers.Drone()
 ]
-
-# Three POIs with Count and Type constraints:
 pois = [
-    # 3 agents must observe
     rovers.POI[rovers.CountConstraint](3),
-    # 2 agents of a certaiin type to get value 1.0
     rovers.POI[rovers.TypeConstraint](2, 1.0),
-    # 5 agents of a certain type must observe
-    rovers.POI[rovers.TypeConstraint](5)
+    rovers.POI[rovers.TypeConstraint](5),
+    rovers.POI[rovers.TypeConstraint](2)
 ]
 
 # Environment with rovers and pois placed in the corners. Defaults to random initialization if unspecified.
@@ -42,7 +53,9 @@ Env = rovers.Environment[rovers.CornersInit]
 env = Env(rovers.CornersInit(10.0), agents, pois)
 states, rewards = env.reset()
 
-# print sample state
-print("Sample environment state (each row corresponds to the state of a rover): ")
-for state in states:
-    print(state.transpose())
+renderer = RoversViewer(env)
+steps = 20000
+for step in range(steps):
+    states, rewards = env.step([[0.0] for rover in env.rovers()])
+    renderer.update()
+    renderer.render()
