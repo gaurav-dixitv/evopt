@@ -11,9 +11,11 @@ cd ../../../
 # modules
 cd  libs/sferes2/modules
 ln -s ../../cvt_map_elites
+ln -s ../../nn2
 cd ../../../
 
 echo "cvt_map_elites" >> libs/sferes2/modules.conf
+echo "nn2" >> libs/sferes2/modules.conf
 
 INSTALL="$(realpath ./install)"
 echo "Install directory: ${INSTALL}"

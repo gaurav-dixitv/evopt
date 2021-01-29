@@ -7,3 +7,6 @@
 [submodule "environments/rovers"]
 	path = environments/rovers
 	url = https://github.com/gaurav-dixitv/rovers.git
+[submodule "libs/nn2"]
+	path = libs/nn2
+	url = https://github.com/gaurav-dixitv/nn2.git

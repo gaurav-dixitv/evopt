@@ -13,6 +13,7 @@ cd ..
 rm modules.conf
 cd modules
 rm cvt_map_elites
+rm nn2
 cd ..
 
 git checkout -- .
