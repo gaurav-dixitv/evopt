@@ -187,6 +187,7 @@ int main(int argc, char **argv) {
     // RUN THE ALGORITHM
     run_ea(argc, argv, ea);
 
+    
     using namespace rovers;
     using Dense = Lidar<Density>;
     using Close = Lidar<Closest>;
@@ -203,11 +204,14 @@ int main(int argc, char **argv) {
     auto env = Env(CornersInit(10.0), rovers, pois);
     env.reset();
 
-    Actions actions(rovers.size());
+    Actions actions;
+    for (size_t i = 0; i < rovers.size(); ++i) {
+        actions.emplace_back(Eigen::Vector2d::Random());  // random dx, dy
+    }
     auto [states, rewards] = env.step(actions);
     // print sample state
     std::cout << "\nSample environment state (each row corresponds to the state of a rover): "
-                << std::endl;
+              << std::endl;
     for (const auto& state : states) {
         std::cout << state.transpose() << std::endl;
     }
